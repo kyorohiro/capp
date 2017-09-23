@@ -1,0 +1,6 @@
+#rule testCore
+#  command=${cmd} ${cc} $in -o $out -L./core -lcore 
+#
+#rule testVectorMath
+#  command=${cmd} ${cc} $in -o $out -L./core -lcore  -L./vectorMath -lvectorMath
+#
