@@ -17,7 +17,7 @@ linkSDK = -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lope
 #
 
 rule obj
-  command=${cmd} ${cc} -c $in -o $out -I.. -I. -I${incSDL} -IC:\mingw_dev_lib\include\GL -DPLATFORM_MINGW -DUSE_SDL_${sdlVersion}
+  command=${cmd} ${cc} -c $in -o $out -I.. -I. -I${incSDL} -DPLATFORM_OSX -DUSE_SDL_${sdlVersion}
 rule lib
   command=${cmd} ${ar} rcs $out $in
 rule testCore
@@ -25,9 +25,9 @@ rule testCore
 rule testVectorMath
   command=${cmd} ${cc} $in -o $out -L./core -lcore  -L./vectorMath -lvectorMath 
 rule app
-  command=${cmd} ${cc} $in -o $out -O2 ${linkSDK} -L${libSDL} -Lcore -lcore  -LvectorMath -lvectorMath  -Lapp -lapp  -IC:\MinGW\indclude -LC:\MinGW\lib
+  command=${cmd} ${cc} $in -o $out -DPLATFORM_MINGW -O2 ${linkSDK} -L${libSDL} -Lcore -lcore  -LvectorMath -lvectorMath  -Lapp -lapp  -IC:\MinGW\indclude -LC:\MinGW\lib
 rule appEx
-  command=${cmd} ${cc} $in -o $out -O2 ${linkSDK} -L${libSDL} -Lcore -lcore  -LvectorMath -lvectorMath  -Lapp -lapp  -IC:\MinGW\indclude -LC:\MinGW\lib
+  command=${cmd} ${cc} $in -o $out -DPLATFORM_MINGW -O2 ${linkSDK} -L${libSDL} -Lcore -lcore  -LvectorMath -lvectorMath  -Lapp -lapp  -IC:\MinGW\indclude -LC:\MinGW\lib
 #
 # core
 subninja core${sep}build.ninja
@@ -42,8 +42,8 @@ subninja app${sep}build.ninja
 # example
 subninja examples${sep}app_001${sep}build.ninja
 subninja examples${sep}app_002_gl${sep}build.ninja
-subninja examples${sep}app_003_mixer${sep}build.ninja
-subninja examples${sep}app_004_gl_texture${sep}build.ninja
-subninja examples${sep}app_005_gl_ttf${sep}build.ninja
-subninja examples${sep}app_006_gl_dyimg${sep}build.ninja
+#subninja examples${sep}app_003_mixer${sep}build.ninja
+#subninja examples${sep}app_004_gl_texture${sep}build.ninja
+#subninja examples${sep}app_005_gl_ttf${sep}build.ninja
+#subninja examples${sep}app_006_gl_dyimg${sep}build.ninja
 #
