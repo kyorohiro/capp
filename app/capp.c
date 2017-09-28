@@ -53,7 +53,9 @@ CApp* createCApp(int width, int height) {
   return ret;
 }
 
-
+int capp_isQuit(CApp* obj) {
+  return obj->isQuit;
+}
 
 void capp_draw(CApp* obj) {
 //  glClear(GL_COLOR_BUFFER_BIT);
@@ -76,9 +78,14 @@ void capp_draw(CApp* obj) {
 }
 
 void main_loop(void*args) {
-  CApp *app = args;
+  capp_enterFrame((CApp*)args);
+}
+
+CApp* capp_enterFrame(CApp* app) {
+  capp_tryInit(app);
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
+    //printf("type:%d\r\n",event.type);
     switch (event.type) {
       case SDL_MOUSEMOTION:
         app->mouseEvent->x = event.motion.x;
@@ -125,10 +132,20 @@ void main_loop(void*args) {
     app->fpsCount--;
   }
   #endif
+  return app;
+}
+
+CApp* capp_tryInit(CApp* obj) {
+  if(obj->isInit == 1) {
+    return obj;
+  } else {
+    return capp_init(obj);
+  }
 }
 
 CApp* capp_init(CApp* obj) {
   printf("main 0\n");
+  obj->isInit = 1;
   //
   SDL_Init(SDL_INIT_EVERYTHING);
 #ifdef USE_SDL_2
@@ -139,7 +156,7 @@ CApp* capp_init(CApp* obj) {
   }
   obj->glContext = SDL_GL_CreateContext(obj->window);
 #ifdef PLATFORM_MINGW
-  glewExperimental = GL_TRUE; 
+  glewExperimental = GL_TRUE;
   GLenum glewError = glewInit();
   if( glewError != GLEW_OK ) {
       printf( "Failed at glewInit! %s\n", glewGetErrorString( glewError ) );

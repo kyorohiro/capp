@@ -27,7 +27,13 @@ void onDisplay(CObject* context, CObject* args) {
 int main(int argc, char** argv) {
   printf("call main\r\n");
   CApp* appObj = createCApp(300, 300);
-  capp_addDisplayEventListener(appObj, (CObject*)appObj, onDisplay);
-  capp_run(appObj);
+//  capp_addDisplayEventListener(appObj, (CObject*)appObj, onDisplay);
+//  capp_run(appObj);
+
+  while(capp_isQuit(getCApp()) != 1) {
+    capp_enterFrame(getCApp());
+    SDL_Delay(1);
+  }
+
   return 0;
 }
